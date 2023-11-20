@@ -163,5 +163,3 @@ gpg-connect-agent /bye
 export GPG_TTY=$(tty)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
