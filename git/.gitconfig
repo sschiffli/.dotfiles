@@ -1,0 +1,14 @@
+[user]
+	email = sschiffli@gmail.com
+	name = Stephen Schiffli
+	signingkey = E4179C77C7B431D11E8EDD352679C1ED9835DB48
+[commit]
+	gpgsign = True
+[tag]
+	gpgsign = True
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = True
+[pull]
+	ff = only
