@@ -1,0 +1,14 @@
+[user]
+	name = Stephen Schiffli
+	email = sschiffli@skyslope.com
+	signingkey = 2F2A31B774DA98297579DA2C20860A0BAEB74295
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[pull]
+	ff = only
