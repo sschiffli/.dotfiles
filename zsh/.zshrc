@@ -82,7 +82,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export KUBE_PS1_SYMBOL_ENABLE=false
-#PROMPT='%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜)$reset_color $(kube_ps1) %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+PROMPT='%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{➜%}) $(kube_ps1) %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -109,7 +109,7 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export KUBECONFIG=~/.kube/cluster-merge:~/.kube/prod
+export KUBECONFIG=~/.kube/prod
 
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:$HOME/.rd/bin
