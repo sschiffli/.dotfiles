@@ -1,4 +1,3 @@
-import = ["/Users/sschiffli/.config/alacritty/catppuccin/catppuccin-latte.toml"]
 
 [env]
 TERM = "xterm-256color"
@@ -29,3 +28,6 @@ opacity = 0.95
 [window.padding]
 x = 2
 y = 2
+
+[general]
+import = ["/Users/sschiffli/.config/alacritty/catppuccin/catppuccin-latte.toml"]
