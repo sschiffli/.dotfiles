@@ -118,11 +118,6 @@ export PATH=$PATH:$HOME/go/bin
 eval "$(fnm env --use-on-cd)"
 . "$HOME/.cargo/env"
 
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-alias docker=nerdctl
 alias vim=nvim
 
 bindkey -s ^f "tmux-sessionizer\n"
