@@ -82,7 +82,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export KUBE_PS1_SYMBOL_ENABLE=false
-PROMPT='%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{➜%}) $(kube_ps1) %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+PROMPT='%{$fg[yellow]%}%m:%{$fg[cyan]%}%c%{$reset_color%}$(kube_ps1) $(git_prompt_info)'
+kubeoff
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
