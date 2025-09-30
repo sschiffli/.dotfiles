@@ -139,17 +139,17 @@ jwt() {
 }
 
 # bun completions
-[ -s "/Users/sschiffli/.bun/_bun" ] && source "/Users/sschiffli/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/sschiffli/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/sschiffli/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '$HOME/code/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/code/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/sschiffli/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/sschiffli/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '$HOME/code/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/code/google-cloud-sdk/completion.zsh.inc'; fi
 
 # Setup yubikey for ssh and gpg
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
@@ -157,4 +157,4 @@ gpgconf --launch gpg-agent
 gpg-connect-agent /bye
 export GPG_TTY=$(tty)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
