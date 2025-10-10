@@ -210,7 +210,7 @@ cleanup_dead_panes() {
 sanity_check
 
 # if TS_SEARCH_PATHS is not set use default
-[[ -n "$TS_SEARCH_PATHS" ]] || TS_SEARCH_PATHS=(~/.dotfiles ~/code ~/code/strictly-picks)
+[[ -n "$TS_SEARCH_PATHS" ]] || TS_SEARCH_PATHS=(~/code ~/code/strictly-picks)
 
 # Add any extra search paths to the TS_SEARCH_PATHS array
 # e.g : EXTRA_SEARCH_PATHS=("$HOME/extra1:4" "$HOME/extra2")
@@ -229,6 +229,9 @@ find_dirs() {
     else
         tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null
     fi
+
+    # HACK: manually add ~/.dotfiles to the list
+    echo "$HOME/.dotfiles"
 
     # note: TS_SEARCH_PATHS is an array of paths to search for directories
     # if the path ends with :number, it will search for directories with a max depth of number ;)
