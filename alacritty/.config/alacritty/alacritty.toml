@@ -23,7 +23,6 @@ style = "Regular"
 
 [window]
 dynamic_title = false
-opacity = 0.95
 
 [window.padding]
 x = 2
@@ -33,4 +32,4 @@ y = 2
 save_to_clipboard = true
 
 [general]
-import = ["/Users/sschiffli/.config/alacritty/catppuccin/catppuccin-latte.toml"]
+import = ["./catppuccin/catppuccin-latte.toml"]
