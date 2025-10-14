@@ -115,7 +115,24 @@ vim.o.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
+  -- Try to use system clipboard first (works on native macOS/Linux with display)
   vim.o.clipboard = 'unnamedplus'
+
+  -- If pbcopy/pbpaste or xclip aren't available, use OSC 52 as fallback
+  -- This is useful for SSH/VM environments where system clipboard tools aren't present
+  if vim.fn.executable('pbcopy') == 0 and vim.fn.executable('xclip') == 0 then
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
+  end
 end)
 
 -- Enable break indent
