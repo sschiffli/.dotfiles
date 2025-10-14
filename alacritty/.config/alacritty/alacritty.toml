@@ -33,3 +33,7 @@ save_to_clipboard = true
 
 [general]
 import = ["./catppuccin/catppuccin-latte.toml"]
+
+# Make Option key send Alt/Meta sequences (works through SSH)
+[window.option_as_alt]
+option_as_alt = "Both"
