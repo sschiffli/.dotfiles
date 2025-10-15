@@ -23,10 +23,13 @@ style = "Regular"
 
 [window]
 dynamic_title = false
+option_as_alt = "Both"
+dynamic_padding = true
+decorations_theme_variant = "Light"
+opacity = 0.95
 
-[window.padding]
-x = 2
-y = 2
+[colors]
+transparent_background_colors = true
 
 [selection]
 save_to_clipboard = true
@@ -34,6 +37,3 @@ save_to_clipboard = true
 [general]
 import = ["./catppuccin/catppuccin-latte.toml"]
 
-# Make Option key send Alt/Meta sequences (works through SSH)
-[window.option_as_alt]
-option_as_alt = "Both"
