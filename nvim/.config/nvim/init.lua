@@ -117,22 +117,6 @@ vim.o.showmode = false
 vim.schedule(function()
   -- Try to use system clipboard first (works on native macOS/Linux with display)
   vim.o.clipboard = 'unnamedplus'
-
-  -- If pbcopy/pbpaste or xclip aren't available, use OSC 52 as fallback
-  -- This is useful for SSH/VM environments where system clipboard tools aren't present
-  if vim.fn.executable('pbcopy') == 0 and vim.fn.executable('xclip') == 0 then
-    vim.g.clipboard = {
-      name = 'OSC 52',
-      copy = {
-        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-      },
-      paste = {
-        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-      },
-    }
-  end
 end)
 
 -- Enable break indent
@@ -973,7 +957,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps

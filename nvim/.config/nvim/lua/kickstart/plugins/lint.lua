@@ -52,6 +52,7 @@ return {
           -- describe the hovered symbol using Markdown.
           if vim.bo.modifiable then
             lint.try_lint()
+            lint.try_lint 'cspell'
           end
         end,
       })
