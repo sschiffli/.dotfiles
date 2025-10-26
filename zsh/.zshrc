@@ -72,8 +72,6 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  kube-ps1
-  kubectl
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
@@ -81,10 +79,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export KUBE_PS1_SYMBOL_ENABLE=false
-PROMPT='%{$fg[yellow]%}%m:%{$fg[cyan]%}%c%{$reset_color%}$(kube_ps1) $(git_prompt_info)'
-kubeoff
-
+PROMPT='%{$fg[yellow]%}%m:%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
