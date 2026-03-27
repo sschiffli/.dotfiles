@@ -107,6 +107,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export KUBECONFIG=~/.kube/prod
@@ -115,6 +116,7 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:$HOME/.rd/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/code/keeperrc/bin
+export PATH=$HOME/.opencode/bin:$PATH
 
 eval "$(fnm env --use-on-cd --shell zsh)"
 . "$HOME/.cargo/env"
