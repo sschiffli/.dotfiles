@@ -114,6 +114,7 @@ export KUBECONFIG=~/.kube/prod
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:$HOME/.rd/bin
 export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/code/keeperrc/bin
 
 eval "$(fnm env --use-on-cd --shell zsh)"
 . "$HOME/.cargo/env"
