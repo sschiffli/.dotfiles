@@ -942,22 +942,35 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'dockerfile', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby', 'c' },
-      },
-      indent = { enable = true, disable = { 'ruby', 'c' } },
-    },
+    config = function()
+      local ensure_installed = { 'bash', 'c', 'diff', 'dockerfile', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      require('nvim-treesitter').install(ensure_installed)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function()
+          -- Autoinstall languages that are not installed (mirrors old auto_install = true)
+          local ts = require 'nvim-treesitter'
+          local lang = vim.treesitter.language.get_lang(vim.bo.filetype) or vim.bo.filetype
+          if vim.tbl_contains(ts.get_available(), lang) and not vim.tbl_contains(ts.get_installed(), lang) then
+            ts.install(lang):wait(120000)
+          end
+
+          -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+          --  If you are experiencing weird indenting issues, add the language to this list.
+          local additional_vim_regex_highlighting = { 'ruby', 'c' }
+          pcall(vim.treesitter.start)
+          if not vim.tbl_contains(additional_vim_regex_highlighting, vim.bo.filetype) then
+            vim.bo.syntax = ''
+          end
+          if not vim.tbl_contains({ 'ruby', 'c' }, vim.bo.filetype) then
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
