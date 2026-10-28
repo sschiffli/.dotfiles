@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Record which claude session id is running in which tmux pane, so
+# tmux-claude-resume can restore the exact conversation after a reboot.
+MAP="${XDG_DATA_HOME:-$HOME/.local/share}/tmux/claude-sessions.tsv"
+mkdir -p "$(dirname "$MAP")"
+tmp=$(mktemp)
+for f in "$HOME"/.claude/sessions/*.json; do
+    [[ -f $f ]] || continue
+    read -r pid sid pane < <(jq -r '[.pid, .sessionId, (.tmux // "" | split(".") | last)] | @tsv' "$f")
+    [[ -n $sid && $pane == %* ]] && kill -0 "$pid" 2>/dev/null || continue
+    key=$(tmux display -p -t "$pane" '#{session_name}:#{window_index}.#{pane_index}' 2>/dev/null) || continue
+    printf '%s\t%s\n' "$key" "$sid"
+done > "$tmp"
+mv "$tmp" "$MAP"

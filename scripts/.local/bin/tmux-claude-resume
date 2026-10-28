@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Started by tmux-resurrect in place of `claude`: resume the conversation that
+# was running in this pane, falling back to the most recent one in the cwd.
+MAP="${XDG_DATA_HOME:-$HOME/.local/share}/tmux/claude-sessions.tsv"
+key=$(tmux display -p -t "$TMUX_PANE" '#{session_name}:#{window_index}.#{pane_index}')
+sid=$(awk -F'\t' -v k="$key" '$1 == k { print $2 }' "$MAP" 2>/dev/null | tail -1)
+if [[ -n $sid ]]; then
+    exec claude --resume "$sid"
+fi
+exec claude --continue
