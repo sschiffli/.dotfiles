@@ -1,1 +1,3 @@
 tmux/.config/tmux/plugins
+scripts/.local/bin/awssso
+scripts/.local/bin/start-sccache

@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# List the running Claude Code sessions: name, state, age, directory, tmux pane
+# and the description that the /resume list shows.
+# Reads ~/.claude/sessions/<pid>.json and skips files whose process is gone
+# (or whose PID was reused by another process).
+#   claude-sessions        table
+#   claude-sessions -a     also show the session id and pid
+all=0
+[[ $1 == -a ]] && all=1
+
+now=$(date +%s)
+age() {
+    local s=$1
+    if   (( s >= 86400 )); then echo "$((s / 86400))d$((s % 86400 / 3600))h"
+    elif (( s >= 3600  )); then echo "$((s / 3600))h$((s % 3600 / 60))m"
+    else                        echo "$((s / 60))m"
+    fi
+}
+
+# The text of the /resume list: the last /rename title, else the last auto
+# title, else the last prompt. Each record is one line that starts with its type.
+title() {
+    local t key
+    for key in custom-title:customTitle ai-title:aiTitle last-prompt:lastPrompt; do
+        t=$(grep -h "^{\"type\":\"${key%%:*}\"" "$@" 2>/dev/null | tail -1 | jq -r ".${key#*:} // empty")
+        [[ -n $t ]] && break
+    done
+    t=${t//[$'\t\n\r']/ }
+    (( ${#t} > 60 )) && t="${t:0:59}…"
+    echo "${t:--}"
+}
+
+rows=()
+for f in "$HOME"/.claude/sessions/*.json; do
+    [[ -f $f ]] || continue
+    IFS=$'\t' read -r pid sid name status started procstart cwd pane < <(
+        jq -r '[.pid, .sessionId, (.name // "-"), (.status // "-"),
+                ((.startedAt // 0) / 1000 | floor), (.procStart // ""),
+                .cwd, (.tmux // "")] | @tsv' "$f")
+    [[ -r /proc/$pid/stat ]] || continue
+    # Field 22 of /proc/PID/stat is the start time; it guards against PID reuse.
+    actual=$(sed 's/.*) //' "/proc/$pid/stat" | awk '{print $20}')
+    [[ -z $procstart || $procstart == "$actual" ]] || continue
+
+    where=-
+    if [[ $pane == *%* ]]; then
+        where=$(tmux display -p -t "${pane##*.}" '#{session_name}:#{window_index}.#{pane_index}' 2>/dev/null) || where=${pane%%.*}
+    fi
+    line="$name"$'\t'"$status"$'\t'"$(age $((now - started)))"$'\t'"${cwd/#$HOME/\~}"$'\t'"$where"
+    (( all )) && line+=$'\t'"$pid"$'\t'"$sid"
+    line+=$'\t'"$(title "$HOME"/.claude/projects/*/"$sid".jsonl)"
+    rows+=("$started"$'\t'"$line")
+done
+
+header=$'NAME\tSTATE\tAGE\tDIR\tTMUX'
+(( all )) && header+=$'\tPID\tSESSION'
+header+=$'\tDESCRIPTION'
+{
+    echo "$header"
+    (( ${#rows[@]} )) && printf '%s\n' "${rows[@]}" | sort -n | cut -f2-
+} | column -t -s $'\t'
+echo "${#rows[@]} running"

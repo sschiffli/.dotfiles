@@ -964,7 +964,16 @@ require('lazy').setup({
           local ts = require 'nvim-treesitter'
           local lang = vim.treesitter.language.get_lang(vim.bo.filetype) or vim.bo.filetype
           if vim.tbl_contains(ts.get_available(), lang) and not vim.tbl_contains(ts.get_installed(), lang) then
-            ts.install(lang):wait(120000)
+            -- Install in the background (don't block buffer load); start highlighting once done
+            local buf = vim.api.nvim_get_current_buf()
+            ts.install(lang):await(function()
+              vim.schedule(function()
+                if vim.api.nvim_buf_is_valid(buf) then
+                  pcall(vim.treesitter.start, buf)
+                end
+              end)
+            end)
+            return
           end
 
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
